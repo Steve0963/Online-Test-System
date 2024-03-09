@@ -18,8 +18,7 @@ coverage
 /cypress/screenshots/
 
 #编辑器目录缓存
-.vscode/*
-!.vscode/extensions.json
+.vscode/
 .idea
 *.suo
 *.ntvs*
