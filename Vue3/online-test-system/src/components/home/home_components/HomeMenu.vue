@@ -13,7 +13,7 @@
       </el-menu-item>
       <el-menu-item index="/home/class">
         <el-icon><document /></el-icon>
-        <template #title>班级</template>
+        <template #title>我的班级</template>
       </el-menu-item>
 
       <el-menu-item index="/home/user">
@@ -21,12 +21,17 @@
         <template #title>个人信息</template>
       </el-menu-item>
 
+      <el-menu-item index="/home/score">
+        <el-icon><setting /></el-icon>
+        <template #title>我的成绩</template>
+      </el-menu-item>
 
 
-       <el-sub-menu index="1">
+
+       <!-- <el-sub-menu index="/home/score">
         <template #title>
           <el-icon><location /></el-icon>
-          <span>班级</span>
+          <span>我的成绩</span>
         </template>
         <el-menu-item-group>
           <template #title><span>Group One</span></template>
@@ -40,7 +45,7 @@
           <template #title><span>item four</span></template>
           <el-menu-item index="1-4-1">item one</el-menu-item>
         </el-sub-menu>
-      </el-sub-menu> 
+      </el-sub-menu>  -->
 
       </el-menu>
 
