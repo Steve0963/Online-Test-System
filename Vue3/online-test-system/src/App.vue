@@ -1,10 +1,10 @@
 <script setup>
-import { RouterLink, RouterView } from 'vue-router'
+import {RouterView } from 'vue-router'
 </script>
 
 <template>
   <div class="app-body">
-    <router-view />
+     <router-view />
   </div>
  
 </template>
