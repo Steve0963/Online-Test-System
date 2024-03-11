@@ -1,5 +1,5 @@
 <template>
-<div class="left-logo"><img src="../assets/png/foot_left_logo.png" style=""></div>
+<div class="left-logo"><img src="https://i.hnust.edu.cn/portal-minio/cms/%E9%A1%B5%E8%84%9A120_120_%E7%99%BD%E8%89%B2_1690354624888.png" style=""></div>
         <el-divider class="vertical-divder" direction="vertical" />
         
         <div>
@@ -11,7 +11,7 @@
             </div>
             
         </div >
-        <div class="right-logo" ><img src="../assets/png/foot_right_logo.png" style=""></div>
+        <div class="right-logo" ><img src="https://i.hnust.edu.cn/portal-minio/cms/%E6%A0%A1%E8%AE%AD256_70_%E7%99%BD%E8%89%B2%E9%80%8F%E6%98%8E_1690354645274.png" style=""></div>
         
        
 
