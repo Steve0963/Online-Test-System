@@ -9,14 +9,26 @@ const router = createRouter({
       component: LoginView
     },
     {
-      path: '/test',
-      name: 'test',
-      component: () => import('../views/TestView.vue')
-    },
-    {
       path: '/home',
       name: 'home',
-      component: () => import('../views/HomeView.vue')
+      component: () => import('../views/HomeView.vue'),
+      children: [
+        {
+          path: '/test',
+          component: () => import('../components/home/test/TestComponent.vue'),
+          name: '考试信息',
+        },
+        {
+          path: '/class',
+          component: () => import('../components/home/class/ClassComponent.vue'),
+          name: '班级'
+        },
+        {
+          path: '/user',
+          component: () => import('../components/home/user/UserComponent.vue'),
+          name: '用户管理'
+        }
+      ]
     },
     
   ]
