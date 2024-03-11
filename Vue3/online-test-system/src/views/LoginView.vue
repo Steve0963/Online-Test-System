@@ -3,7 +3,8 @@ import { Ref, reactive, ref } from 'vue'
 import type { FormInstance, FormRules } from 'element-plus'
 import type { TabsPaneContext } from 'element-plus'
 import { User, Lock, MessageBox } from '@element-plus/icons-vue'
-import Authenticator from '../components/Authenticator.vue'
+import Authenticator from '../components/vertify/Authenticator.vue'
+
 import { login } from '../requests/api'
 const identifyCode = ref();
 const identifyCodes = ref("1234567890abcdefjhijklinopqrsduvwxyz");
@@ -223,4 +224,4 @@ const submitForm = (formEl: FormInstance | undefined) => {
     font-size: xx-large;
     color: aliceblue;
 }
-</style>
+</style>../components/vertify/Authenticator.vue
