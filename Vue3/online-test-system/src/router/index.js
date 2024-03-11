@@ -15,19 +15,24 @@ const router = createRouter({
       children: [
         {
           path: '/home/test',
-          component: () => import('../components/home/test/TestComponent.vue'),
+          component: () => import('../components/home/TestComponent.vue'),
           name: '考试信息',
         },
         {
           path: '/home/class',
-          component: () => import('../components/home/class/ClassComponent.vue'),
-          name: '班级'
+          component: () => import('../components/home/ClassComponent.vue'),
+          name: '我的班级'
         },
         {
           path: '/home/user',
-          component: () => import('../components/home/user/UserComponent.vue'),
+          component: () => import('../components/home/UserComponent.vue'),
           name: '用户管理'
-        }
+        },
+        {
+          path: '/home/score',
+          component: () => import('../components/home/ScoreComponent.vue'),
+          name: '我的成绩'
+        },
       ]
     },
     
