@@ -7,16 +7,16 @@
         
       >
       
-      <el-menu-item index="/test">
+      <el-menu-item index="/home/test">
         <el-icon><icon-menu /></el-icon>
         <template #title>考试信息</template>
       </el-menu-item>
-      <el-menu-item index="/class">
+      <el-menu-item index="/home/class">
         <el-icon><document /></el-icon>
         <template #title>班级</template>
       </el-menu-item>
 
-      <el-menu-item index="/user">
+      <el-menu-item index="/home/user">
         <el-icon><setting /></el-icon>
         <template #title>个人信息</template>
       </el-menu-item>

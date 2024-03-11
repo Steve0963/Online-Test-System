@@ -14,17 +14,17 @@ const router = createRouter({
       component: () => import('../views/HomeView.vue'),
       children: [
         {
-          path: '/test',
+          path: '/home/test',
           component: () => import('../components/home/test/TestComponent.vue'),
           name: '考试信息',
         },
         {
-          path: '/class',
+          path: '/home/class',
           component: () => import('../components/home/class/ClassComponent.vue'),
           name: '班级'
         },
         {
-          path: '/user',
+          path: '/home/user',
           component: () => import('../components/home/user/UserComponent.vue'),
           name: '用户管理'
         }
