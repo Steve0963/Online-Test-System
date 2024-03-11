@@ -1,8 +1,8 @@
 <script setup>
 import { RouterLink, RouterView } from 'vue-router'
-import HomeHeader from '../components/home/HomeHeader.vue';
-import HomeMenu from '../components/home/HomeMenu.vue';
-import HomeFooter from '../components/home/HomeFooter.vue';
+import HomeHeader from '../components/home/home_components/HomeHeader.vue';
+import HomeMenu from '../components/home/home_components/HomeMenu.vue';
+import HomeFooter from '../components/home/home_components/HomeFooter.vue';
 
 </script>
 
@@ -19,7 +19,6 @@ import HomeFooter from '../components/home/HomeFooter.vue';
         <el-main class="main-right">
           <el-scrollbar>
             <RouterView></RouterView>
-            <p v-for="item in 100" :key="item" class="scrollbar-demo-item">{{ item }}</p>
           </el-scrollbar>
         </el-main>
       </el-container>
@@ -44,19 +43,23 @@ import HomeFooter from '../components/home/HomeFooter.vue';
 
 .main-container {
   height: 77vh;
-  background: url("https://alifei03.cfp.cn/creative/vcg/nowater800/new/VCG211370226423.jpg");
+  
+
+
+  
 }
 
 .home-menu {
   height: 77vh;
-  background-color: beige;
+  background-color: #11489336;
   
 }
 
 .main-right {
   padding-right: 0px;
   padding-bottom: 0px;
-  
+
+
 
 }
 
@@ -67,6 +70,7 @@ import HomeFooter from '../components/home/HomeFooter.vue';
   padding-right: 50px;
 }
 .foot-container{
-  padding-top: 13px;
+  padding-top: 19px;
+  padding-bottom: 19px;
 }
-</style>
+</style>../components/home/home_components/HomeFooter.vue../components/home/home_components/HomeHeader.vue../components/home/home_components/HomeMenu.vue
