@@ -7,7 +7,6 @@ import HomeFooter from '../components/home/home_components/HomeFooter.vue';
 </script>
 
 <template>
-  <div class="common-layout">
     <el-container class="home-body">
       <el-header>
         <HomeHeader></HomeHeader>
@@ -28,12 +27,13 @@ import HomeFooter from '../components/home/home_components/HomeFooter.vue';
         </el-container>
       </el-footer>
     </el-container>
-  </div>
 </template>
 
 <style scoped>
 .home-body {
   height: 100vh;
+  width: 100vw;
+
 }
 
 .el-header {
@@ -43,10 +43,8 @@ import HomeFooter from '../components/home/home_components/HomeFooter.vue';
 
 .main-container {
   height: 77vh;
-  
 
 
-  
 }
 
 .home-menu {
@@ -58,7 +56,7 @@ import HomeFooter from '../components/home/home_components/HomeFooter.vue';
 .main-right {
   padding-right: 0px;
   padding-bottom: 0px;
-
+ 
 
 
 }
@@ -68,9 +66,11 @@ import HomeFooter from '../components/home/home_components/HomeFooter.vue';
   height: 15vh;
   padding-left: 50px;
   padding-right: 50px;
+
 }
 .foot-container{
-  padding-top: 19px;
-  padding-bottom: 19px;
+  padding-top: 11px;
+  padding-bottom: 11px;
+
 }
-</style>../components/home/home_components/HomeFooter.vue../components/home/home_components/HomeHeader.vue../components/home/home_components/HomeMenu.vue
+</style>
