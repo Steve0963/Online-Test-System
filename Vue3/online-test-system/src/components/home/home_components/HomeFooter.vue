@@ -41,7 +41,7 @@ height: 120px;
 }
     
 .horizon-divider{
-    width: 1470px;
+    width: 67vw;
     margin-right: 50px;
     
 }
