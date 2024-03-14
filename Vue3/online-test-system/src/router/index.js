@@ -29,6 +29,11 @@ const router = createRouter({
           name: '用户管理'
         },
         {
+          path: '/home/message',
+          component: () => import('../components/home/MessageComponent.vue'),
+          name: '系统信息'
+        },
+        {
           path: '/home/score',
           component: () => import('../components/home/ScoreComponent.vue'),
           name: '我的成绩'
