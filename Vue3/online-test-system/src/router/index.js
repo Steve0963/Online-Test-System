@@ -14,29 +14,73 @@ const router = createRouter({
       component: () => import('../views/HomeView.vue'),
       children: [
         {
-          path: '/home/test',
-          component: () => import('../components/home/TestComponent.vue'),
+          path: '/home/student/test',
+          component: () => import('../components/home/student/TestComponent.vue'),
           name: '考试信息',
         },
         {
-          path: '/home/class',
-          component: () => import('../components/home/ClassComponent.vue'),
+          path: '/home/student/class',
+          component: () => import('../components/home/student/ClassComponent.vue'),
           name: '我的班级'
         },
         {
-          path: '/home/user',
-          component: () => import('../components/home/UserComponent.vue'),
+          path: '/home/student/user',
+          component: () => import('../components/home/student/UserComponent.vue'),
           name: '用户管理'
         },
         {
-          path: '/home/message',
-          component: () => import('../components/home/MessageComponent.vue'),
+          path: '/home/student/message',
+          component: () => import('../components/home/student/MessageComponent.vue'),
           name: '系统信息'
         },
         {
-          path: '/home/score',
-          component: () => import('../components/home/ScoreComponent.vue'),
+          path: '/home/student/score',
+          component: () => import('../components/home/student/ScoreComponent.vue'),
           name: '我的成绩'
+        },
+
+
+
+        {
+          path: '/home/teacher',
+          component: () => import('../components/home/teacher/MainComponent.vue'),
+          name: '主页',
+        },
+        {
+          path: '/home/teacher/class',
+          component: () => import('../components/home/teacher/ClassComponent.vue'),
+          name: '班级管理'
+        },
+        {
+          path: '/home/teacher/exam',
+          component: () => import('../components/home/teacher/ExamComponent.vue'),
+          name: '考试管理'
+        },
+        {
+          path: '/home/teacher/paper',
+          component: () => import('../components/home/teacher/PapersComponent.vue'),
+          name: '卷库管理'
+        },
+        {
+          path: '/home/teacher/paperlist',
+          component: () => import('../components/home/teacher/PaperListComponent.vue'),
+          name: '试卷列表'
+        },
+        {
+          path: '/home/teacher/papercreate',
+          component: () => import('../components/home/teacher/PaperCreateComponent.vue'),
+          name: '创建试卷'
+        },
+        {
+          path: '/home/teacher/problemlist',
+          component: () => import('../components/home/teacher/ProblemListComponent.vue'),
+          name: '试题列表'
+        },
+
+        {
+          path: '/home/teacher/problemcreate',
+          component: () => import('../components/home/teacher/ProblemCreateComponent.vue'),
+          name: '创建试题'
         },
       ]
     },
