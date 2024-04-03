@@ -47,14 +47,11 @@ import HomeFooter from '../components/home/home_components/HomeFooter.vue';
 
 }
 
-.home-menu {
-  height: 77vh;
-  background-color: #11489336;
-  
-}
+
 
 .main-right {
   padding-right: 0px;
+  padding-left: 0px;
   padding-bottom: 0px;
  
 
