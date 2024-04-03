@@ -8,7 +8,7 @@
       <el-table-column prop="id" label="考试编号" />
       <el-table-column prop="score" label="考试成绩" sortable />
       <el-table-column prop="type" label="考试方式" sortable />
-      <el-table-column prop="tag" label="得分等级" width="180" sortable :filters="tagFilterOptions" :filter-method="filterTag" filter-placement="bottom-end" >
+      <el-table-column prop="tag" label="得分等级" width="180" :filters="tagFilterOptions" :filter-method="filterTag" filter-placement="bottom-end" >
         <template #default="scope">
           <el-tag :type="getTagType(scope.row.score)" disable-transitions>{{ getTag(scope.row.score) }}</el-tag>
         </template>
