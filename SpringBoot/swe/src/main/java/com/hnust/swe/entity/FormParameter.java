@@ -11,5 +11,11 @@ public class FormParameter {
         public static final String PASSWORD = "password";
         // 添加其他注册参数...
     }
+
+    public static class ClassFunction {
+        public static final String NAME = "className";
+        public static final String DESC = "classDesc";
+        // 添加其他注册参数...
+    }
     
 }
