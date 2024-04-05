@@ -47,19 +47,24 @@ const router = createRouter({
           name: '主页',
         },
         {
-          path: '/home/teacher/class',
-          component: () => import('../components/home/teacher/ClassComponent.vue'),
-          name: '班级管理'
+          path: '/home/teacher/stulist',
+          component: () => import('../components/home/teacher/StuListComponent.vue'),
+          name: '学生列表',
+        },
+        {
+          path: '/home/teacher/classlist',
+          component: () => import('../components/home/teacher/ClassListComponent.vue'),
+          name: '班级列表'
+        },
+        {
+          path: '/home/teacher/classcreate',
+          component: () => import('../components/home/teacher/ClassCreateComponent.vue'),
+          name: '班级创建'
         },
         {
           path: '/home/teacher/exam',
           component: () => import('../components/home/teacher/ExamComponent.vue'),
           name: '考试管理'
-        },
-        {
-          path: '/home/teacher/paper',
-          component: () => import('../components/home/teacher/PapersComponent.vue'),
-          name: '卷库管理'
         },
         {
           path: '/home/teacher/paperlist',
