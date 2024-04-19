@@ -15,6 +15,7 @@ public class FormParameter {
     public static class ClassFunction {
         public static final String NAME = "className";
         public static final String DESC = "classDesc";
+        public static final String CREATER = "createrId";
         // 添加其他注册参数...
     }
     
