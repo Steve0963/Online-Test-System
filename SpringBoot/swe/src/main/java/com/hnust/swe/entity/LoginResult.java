@@ -11,6 +11,7 @@ public class LoginResult {
     private int role;
     private String account;
     private String name;
+    private String teacher_id;
 
     
 }
