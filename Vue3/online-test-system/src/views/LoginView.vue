@@ -89,7 +89,7 @@ const submitLogin = (formEl: FormInstance | undefined) => {
             console.log(result)
 
             if(result != null) {
-                store.dispatch('login', { role: result.role, account: result.account,name:result.name });
+                store.dispatch('login', { role: result.role, account: result.account,name:result.name ,id:result.id});
                 console.log( store.state)
           switch(result.role) {
             case 0:  //管理员
@@ -169,6 +169,7 @@ const submitRegister = (formEl: FormInstance | undefined) => {
                                 <el-form-item>
                                     <el-button type="primary" @click="submitLogin(loginFormRef)">登录</el-button>
                                 </el-form-item>
+                                <el-alert title="Error alert" type="error" center show-icon />
                             </el-form>
                         </el-tab-pane>
 
