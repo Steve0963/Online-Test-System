@@ -10,12 +10,14 @@ export const cookiePlugin= store => {
           setCookie('account', state.account, 7); 
           setCookie('name', state.name, 7); 
           setCookie('role', state.role, 7);
+          setCookie('id', state.id, 7);
           break;
         case 'logout':
             setCookie('isLoggedIn', state.isLoggedIn, 7); 
             setCookie('account', state.account, 7); 
             setCookie('name', state.name, 7); 
-            setCookie('role', state.role, 7);// 设置用户账号在 Cookie 中的过期时间为 7 天
+            setCookie('role', state.role, 7);
+            setCookie('id', state.id, 7);// 设置用户账号在 Cookie 中的过期时间为 7 天
             break;
         
       }
