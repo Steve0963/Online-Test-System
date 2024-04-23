@@ -57,11 +57,6 @@ const router = createRouter({
           name: '班级列表'
         },
         {
-          path: '/home/teacher/classcreate',
-          component: () => import('../components/home/teacher/ClassCreateComponent.vue'),
-          name: '班级创建'
-        },
-        {
           path: '/home/teacher/exam',
           component: () => import('../components/home/teacher/ExamComponent.vue'),
           name: '考试管理'
