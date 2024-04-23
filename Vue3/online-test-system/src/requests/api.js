@@ -51,3 +51,56 @@ export const register = (formData) => {
         throw error;
       });
   };
+
+
+  export const joinClass = async (formData) => {
+    const url = `${baseUrl}/joinClass`;
+  console.log(formData)
+    try {
+      const response = await axios.post(url, formData);
+      return response;
+    } catch (error) {
+      console.error('Error submitting form:', error);
+      throw error;
+    }
+  };
+
+  export const myClass = (formData) => {
+    const url = `${baseUrl}/myClass`;
+  console.log(formData)
+    return axios.post(url, formData)
+      .then(response => {
+        return response
+      })
+      .catch(error => {
+        console.error('Error submitting form:', error);
+        throw error;
+      });
+  };
+
+  export const myExam = (formData) => {
+    const url = `${baseUrl}/myExam`;
+  console.log(formData)
+    return axios.post(url, formData)
+      .then(response => {
+        return response
+      })
+      .catch(error => {
+        console.error('Error submitting form:', error);
+        throw error;
+      });
+  };
+
+
+  export const myScore = (formData) => {
+    const url = `${baseUrl}/myScore`;
+  console.log(formData)
+    return axios.post(url, formData)
+      .then(response => {
+        return response
+      })
+      .catch(error => {
+        console.error('Error submitting form:', error);
+        throw error;
+      });
+  };
