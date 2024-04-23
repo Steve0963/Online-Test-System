@@ -10,15 +10,15 @@ export default createStore({
     name: null,
     pic: null,
     role: null,
-    currentPage:null
+    id:null,
   },
   mutations: {
-    login(state, { role, account, name }) {
+    login(state, { role, account, name,id }) {
       state.isLoggedIn = true;
       state.role = role;
       state.account = account;
       state.name = name;
-      //state.pic=pic;
+      state.id = id;
     },
     logout(state) {
       state.isLoggedIn = false;
@@ -26,24 +26,26 @@ export default createStore({
       state.account = null;
       state.name = null;
       state.role = null;
+      state.id = null;
 
       //state.pic=null;
     },
-    setCurrentPage(state, page) {
-      state.currentPage = page;
-    },
-
   },
 
   actions: {
-    login({ commit }, { role, account, name }) {
-      commit('login', { role, account, name });
+    login({ commit }, { role, account, name,id }) {
+      commit('login', { role, account, name ,id});
     },
     logout({ commit }) {
       commit('logout');
-    }
+    },
   },
   modules: {
   },
   plugins: [cookiePlugin],
+  getters: {
+    // 获取数据
+  },
+
+
 });
