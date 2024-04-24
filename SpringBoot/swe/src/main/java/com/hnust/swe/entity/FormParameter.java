@@ -27,5 +27,10 @@ public class FormParameter {
 
         // 添加其他注册参数...
     }
+
+    public static class TeacherFunction {
+        public static final String CREATER = "createrId";
+        // 添加其他注册参数...
+    }
     
 }
