@@ -10,4 +10,6 @@ public interface ExamService {
     public ApiResult <ExamListResult> examList(String studentId);
     public ApiResult <ScoreListResult> scoreList(String studentId);
 
+    public ApiResult <ExamListResult> teacherExamList(String teacherId);
+
 }
