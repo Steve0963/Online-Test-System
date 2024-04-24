@@ -4,33 +4,55 @@
   
     <el-table ref="tableRef" row-key="id" :data="tableData" stripe>
   
-      <el-table-column prop="name" label="考试名称" width="180" sortable />
+      <el-table-column prop="exam_name" label="考试名称" width="180" sortable />
       <el-table-column prop="id" label="考试编号" />
-      <el-table-column prop="score" label="考试成绩" sortable />
-      <el-table-column prop="type" label="考试方式" sortable />
+      <el-table-column prop="exam_score" label="考试成绩" sortable />
+      <el-table-column prop="exam_type" label="考试方式" sortable />
       <el-table-column prop="tag" label="得分等级" width="180" :filters="tagFilterOptions" :filter-method="filterTag" filter-placement="bottom-end" >
         <template #default="scope">
-          <el-tag :type="getTagType(scope.row.score)" disable-transitions>{{ getTag(scope.row.score) }}</el-tag>
+          <el-tag :type="getTagType(scope.row.exam_score)" disable-transitions>{{ getTag(scope.row.exam_score) }}</el-tag>
         </template>
       </el-table-column>
   
-      <el-table-column prop="date" label="考试时间" sortable width="180" column-key="date" :filters="timeFilterOptions()" :filter-method="filterHandler" />
+      <el-table-column prop="start_time" label="考试时间" sortable width="180" column-key="start_time" :filters="timeFilterOptions()" :filter-method="filterHandler" />
   
     </el-table>
   </template>
   
   <script lang="ts" setup>
-  import { ref } from 'vue'
+  import { ref,onMounted } from 'vue'
   import type { TableColumnCtx, TableInstance } from 'element-plus'
-  
+  import { getCookie,getTagType,getTag } from '../utils/tool'
+import {   myScore } from '../../../requests/api';
   interface User {
-    name: string
-    id: string
-    score: number
-    type: string
-    date: string
+    exam_score: number
+	id: string
+	exam_name: string
+	start_time: string
+	exam_type: string
   }
-  
+  onMounted(async () => {
+  loadScore()
+});
+
+const loadScore = async () => {
+  console.log('加载成绩列表');
+  try {
+    await myScore({
+      studentId: getCookie('id')
+    }).then(data => {
+      console.log('获取的数据：', data);
+      tableData.value = data.data.data
+      console.log('获取的数据：', tableData.value);
+      // 在这里处理返回的数据
+      return tableData.value
+    })
+
+  } catch (error) {
+    console.error('加载考试列表出错：', error);
+    throw error; // 抛出错误，交给调用方处理
+  }
+};
   const tableRef = ref<TableInstance>()
   
   const resetDateFilter = () => {
@@ -43,7 +65,7 @@
   
   
   const filterTag = (value: string, row: User) => {
-    return getTag(row.score)  === value
+    return getTag(row.exam_score)  === value
   }
   const filterHandler = (
     value: string,
@@ -54,22 +76,6 @@
     return row[property] === value
   }
   
-  
-  const getTagType = (score: number): string => {
-    if (score>=90) return 'success'
-    else if(score>=80) return 'primary'
-    else if(score>=70) return 'info'
-    else if(score>=60) return 'warning'
-    else return 'danger'
-  }
-  
-  const getTag = (score: number): string => {
-    if (score>=90) return '优'
-    else if(score>=80) return '良'
-    else if(score>=70) return '中'
-    else if(score>=60) return '差'
-    else return '不及格'
-  }
   
   const tagFilterOptions =[
     { text: '优', value: '优' },
@@ -88,79 +94,5 @@
     ]
     return options
   }
-  
-  const tableData: User[] = [
-    {
-      date: '2016-05-01',
-      name: '计算机导论',
-      id: '24130',
-      score: 48,
-      type: '线上'
-    },
-    {
-      date: '2016-05-02',
-      name: '软件工程',
-      id: '24131',
-      score: 79,
-      type: '线下'
-    },
-    {
-      date: '2016-05-03',
-      name: '大学英语2',
-      id: '24132',
-      score: 69,
-      type: '线上'
-    },
-    {
-      date: '2016-05-04',
-      name: '线性代数',
-      id: '24133',
-      score: 99,
-      type: '线下'
-    },
-    {
-      date: '2016-05-05',
-      name: '大数据y',
-      id: '24134',
-      score: 89,
-      type: '线上'
-    },
-    {
-      date: '2016-05-05',
-      name: '大数据t',
-      id: '24135',
-      score: 49,
-      type: '线上'
-    },
-    {
-      date: '2016-05-05',
-      name: '大数据r',
-      id: '24136',
-      score: 59,
-      type: '线上'
-    },
-    {
-      date: '2016-05-05',
-      name: '大数据e',
-      id: '24137',
-      score: 69,
-      type: '线上'
-    },
-    {
-      date: '2016-05-05',
-      name: '大数据w',
-      id: '24138',
-      score: 79,
-      type: '线上'
-    },
-    {
-      date: '2016-05-05',
-      name: '大数据q',
-      id: '24139',
-      score: 89,
-      type: '线上'
-    },
-  
-  
-  ]
+  const tableData= ref<User>([])
   </script>
