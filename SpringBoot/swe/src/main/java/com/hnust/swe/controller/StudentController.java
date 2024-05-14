@@ -25,8 +25,8 @@ public class StudentController {
     public ApiResult createClass(@RequestBody Map<String, String> classEntity) {
 
   
-        String token = classEntity.get(FormParameter.StudentFunction.TOKEN);
-        String studentID=classEntity.get(FormParameter.StudentFunction.ID);
+        String token = classEntity.get(FormParameter.Student.TOKEN);
+        String studentID=classEntity.get(FormParameter.Student.ID);
 System.out.println(studentID);
 System.out.println(token);
 try {
@@ -46,7 +46,7 @@ try {
     public ApiResult loadClass(@RequestBody Map<String, String> classEntity) {
         System.out.println(classEntity);
 
-        String id = classEntity.get(FormParameter.StudentFunction.ID);
+        String id = classEntity.get(FormParameter.Student.ID);
 
 
 List <StudentClassListResult > classListRes = classListService.loadMyClassList(id);
@@ -64,7 +64,7 @@ List <StudentClassListResult > classListRes = classListService.loadMyClassList(i
     @PostMapping("/myExam")
     public ApiResult loadExam(@RequestBody Map<String, String> classEntity) {
         System.out.println(classEntity);
-        String id = classEntity.get(FormParameter.StudentFunction.ID);
+        String id = classEntity.get(FormParameter.Student.ID);
 
 return  examService.examList(id);
 
@@ -73,7 +73,7 @@ return  examService.examList(id);
     @PostMapping("/myScore")
     public ApiResult loadScore(@RequestBody Map<String, String> classEntity) {
         System.out.println(classEntity);
-        String id = classEntity.get(FormParameter.StudentFunction.ID);
+        String id = classEntity.get(FormParameter.Student.ID);
 
     return  examService.scoreList(id);
 

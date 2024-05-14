@@ -72,7 +72,6 @@
         <template #title>
           <el-icon><document /></el-icon>试卷管理</template>
         <el-menu-item index="/home/teacher/paperlist">试卷列表</el-menu-item>
-        <el-menu-item index="/home/teacher/papercreate">创建试卷</el-menu-item>
       </el-sub-menu>
 
 
@@ -80,7 +79,6 @@
         <template #title>
           <el-icon><document /></el-icon>题库管理</template>
         <el-menu-item index="/home/teacher/problemlist">题目列表</el-menu-item>
-        <el-menu-item index="/home/teacher/problemcreate">创建题目</el-menu-item>
       </el-sub-menu>
 
     </el-menu>

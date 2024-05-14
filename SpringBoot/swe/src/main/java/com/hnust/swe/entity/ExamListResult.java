@@ -1,5 +1,6 @@
 package com.hnust.swe.entity;
 import java.util.Date;
+import java.util.List;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -10,7 +11,7 @@ import lombok.NoArgsConstructor;
 public class ExamListResult {
 
 
-    private String class_id; 
+    private List<Integer> exam_class; 
 	private String id; 
 	private String creater_id; 
 	private String exam_name; 

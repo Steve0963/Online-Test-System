@@ -37,6 +37,7 @@ System.out.println(password);
             return ApiResultHandler.buildApiResult(200, "请求成功", teacherRes);
         } 
         LoginResult studentRes = loginService.studentLogin(account,password);
+        System.out.println(studentRes);
         if (studentRes != null) {
             return ApiResultHandler.buildApiResult(200, "请求成功", studentRes);
         }

@@ -27,7 +27,7 @@ export const register = (formData) => {
 
 
   export const creatClass = (formData) => {
-    const url = `${baseUrl}/creatClass`;
+    const url = `${baseUrl}/teacher/creatClass`;
   console.log(formData)
     return axios.post(url, formData)
       .then(response => {
@@ -40,7 +40,7 @@ export const register = (formData) => {
   };
 
   export const loadClass = (formData) => {
-    const url = `${baseUrl}/loadClass`;
+    const url = `${baseUrl}/teacher/loadClass`;
   console.log(formData)
     return axios.post(url, formData)
       .then(response => {
@@ -107,6 +107,116 @@ export const register = (formData) => {
 
   export const examList = (formData) => {
     const url = `${baseUrl}/teacher/examList`;
+  console.log(formData)
+    return axios.post(url, formData)
+      .then(response => {
+        return response
+      })
+      .catch(error => {
+        console.error('Error submitting form:', error);
+        throw error;
+      });
+  };
+
+
+  export const paperList = (formData) => {
+    const url = `${baseUrl}/teacher/paperList`;
+  console.log(formData)
+    return axios.post(url, formData)
+      .then(response => {
+        return response
+      })
+      .catch(error => {
+        console.error('Error submitting form:', error);
+        throw error;
+      });
+  };
+
+  export const studentList = (formData) => {
+    const url = `${baseUrl}/teacher/studentList`;
+  console.log(formData)
+    return axios.post(url, formData)
+      .then(response => {
+        return response
+      })
+      .catch(error => {
+        console.error('Error submitting form:', error);
+        throw error;
+      });
+  };
+
+  export const problemList = (formData) => {
+    const url = `${baseUrl}/teacher/problemList`;
+  console.log(formData)
+    return axios.post(url, formData)
+      .then(response => {
+        return response
+      })
+      .catch(error => {
+        console.error('Error submitting form:', error);
+        throw error;
+      });
+  };
+
+  export const paperProblem = (formData) => {
+    const url = `${baseUrl}/teacher/paperProblem`;
+  console.log(formData)
+    return axios.post(url, formData)
+      .then(response => {
+        return response
+      })
+      .catch(error => {
+        console.error('Error submitting form:', error);
+        throw error;
+      });
+  };
+
+
+  export const savePaperProblem = (formData) => {
+    const url = `${baseUrl}/teacher/savePaperProblem`;
+  console.log(formData)
+    return axios.post(url, formData)
+      .then(response => {
+        return response
+      })
+      .catch(error => {
+        console.error('Error submitting form:', error);
+        throw error;
+      });
+  };
+
+
+  export const removeStudent = (formData) => {
+    const url = `${baseUrl}/teacher/removeStudent`;
+  console.log(formData)
+    return axios.post(url, formData)
+      .then(response => {
+        return response
+      })
+      .catch(error => {
+        console.error('Error submitting form:', error);
+        throw error;
+      });
+  };
+
+
+  
+  export const deleteClassById = (formData) => {
+    const url = `${baseUrl}/teacher/deleteClass`;
+  console.log(formData)
+    return axios.post(url, formData)
+      .then(response => {
+        return response
+      })
+      .catch(error => {
+        console.error('Error submitting form:', error);
+        throw error;
+      });
+  };
+
+
+  export const saveExam= (formData) => {
+    const url = `${baseUrl}/teacher/saveExam`;
   console.log(formData)
     return axios.post(url, formData)
       .then(response => {

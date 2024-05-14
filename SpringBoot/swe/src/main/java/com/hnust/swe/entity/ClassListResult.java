@@ -10,10 +10,11 @@ import lombok.NoArgsConstructor;
 
 public class ClassListResult {
 
-    private String class_id;
+    private Integer class_id;
     private String name;
     private String class_token;
     private Date creat_time;
     private int class_num;
+    private String class_desc;
 
 }
