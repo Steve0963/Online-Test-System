@@ -4,7 +4,7 @@
       发布考试
     </el-button>
   </div>
-  <el-dialog v-model="dialogFormVisible" title="编辑考试" width="680" draggable>
+  <el-dialog v-model="dialogFormVisible" title="编辑考试" width="680" draggable @close="resetForm(ruleFormRef)">
     <el-form ref="ruleFormRef" style="max-width: 600px" :model="ruleForm" :rules="rules" label-width="auto"
       class="demo-ruleForm" :size="formSize" status-icon>
       <el-form-item label="考试名称" prop="exam_name">
@@ -114,7 +114,7 @@
 import { reactive, ref, watch, onMounted } from 'vue'
 import { Delete, Edit, } from '@element-plus/icons-vue'
 import type { ComponentSize, FormInstance, FormRules, CheckboxValueType, CaretRight } from 'element-plus'
-import { examList, loadClass, paperList, saveExam } from '../../../requests/api';
+import { deleteExam, examList, loadClass, paperList, saveExam } from '../../../requests/api';
 import { getCookie, getExamType,calculateExamDuration ,formatExamTime} from '../utils/tool'
 import { ElNotification ,ElMessage} from 'element-plus'
 
@@ -268,18 +268,34 @@ const editExam = async (exam) => {
   ruleForm.id = exam.id
   ruleForm.paper_id = exam.paper_id
   ruleForm.exam_type = exam.exam_type
-  //ruleForm.exam_class=exam.exam_class
+  ruleForm.exam_class=exam.exam_class
   ruleForm.start_time = exam.start_time
   ruleForm.end_time = exam.end_time
   ruleForm.exam_place = exam.exam_place
+}
+
+const removeExam = async (exam) => {
   try {
-    await paperProblem({
-      paperId: paper.id
+    await deleteExam({
+      examId: exam.id
     }).then(data => {
-      previewProblemList.value = data.data.data
-      console.log('获取的数据：', previewProblemList.value);
-      // 在这里处理返回的数据
-      return previewProblemList.value
+
+      if (data.data.code == 200) {
+        ElMessage({
+          showClose: true,
+          message: data.data.message,
+          type: 'success',
+        })
+        loadExamList()
+      }
+      else {
+        ElMessage({
+          showClose: true,
+          message: data.data.message,
+          type: 'danger',
+        })
+      }
+
     })
 
   } catch (error) {
@@ -367,7 +383,7 @@ const submitForm = async (formEl: FormInstance | undefined) => {
       else {
         ElMessage({
           showClose: true,
-          message: '保存失败',
+          message: data.data.message,
           type: 'danger',
         })
       }
@@ -387,6 +403,14 @@ const createForm = () => {
 const resetForm = (formEl: FormInstance | undefined) => {
   if (!formEl) return
   formEl.resetFields()
+  ruleForm.exam_name = ''
+  ruleForm.id = ''
+  ruleForm.paper_id = ''
+  ruleForm.exam_type = ''
+  ruleForm.exam_class=[]
+  ruleForm.start_time = ''
+  ruleForm.end_time = ''
+  ruleForm.exam_place = ''
 }
 
 const filterHandler = (
