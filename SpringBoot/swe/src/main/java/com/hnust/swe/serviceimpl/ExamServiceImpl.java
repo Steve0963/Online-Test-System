@@ -268,4 +268,22 @@ public class ExamServiceImpl implements ExamService {
 
     }
 
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public ApiResult<ExamListResult> deleteExam(String exam) {
+
+        try {
+
+            examMapper.deleteExamClassByExamId(exam);
+            examMapper.deleteExamByExamId(exam);
+            return ApiResultHandler.buildApiResult(200, "删除成功", null);
+        } catch (Exception e) {
+            // TODO: handle exception
+            return ApiResultHandler.buildApiResult(400, "删除失败，未知错误！", null);
+
+        }
+
+    }
+
 }

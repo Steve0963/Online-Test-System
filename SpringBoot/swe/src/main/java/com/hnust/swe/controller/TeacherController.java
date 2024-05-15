@@ -121,6 +121,16 @@ return  examService.teacherExamList(id);
 
     }
 
+    @PostMapping("/teacher/deleteExam")
+    public ApiResult deleteExam(@RequestBody Map<String, String> classEntity) {
+        System.out.println(classEntity);
+        String exam = classEntity.get(FormParameter.Exam.ID);
+        //System.out.println(exam);
+
+    return  examService.deleteExam(exam);
+
+    }
+
 
 
 

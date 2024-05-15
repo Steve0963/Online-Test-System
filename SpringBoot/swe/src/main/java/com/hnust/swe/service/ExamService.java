@@ -33,5 +33,7 @@ public interface ExamService {
 
     public ApiResult <ExamListResult> saveExam(Object exam);
 
+    public ApiResult <ExamListResult> deleteExam(String exam);
+
 
 }

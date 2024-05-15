@@ -155,6 +155,11 @@ public interface ExamMapper {
     @Delete("Delete from paper_problems where " + "paper_id = #{paperId}")
     public void deletePaperProblemByPaperId(String paperId);
 
+
+    @Delete("Delete from exam where " + "id = #{examId}")
+    public void deleteExamByExamId(String examId);
+
+
     @Select("SELECT\n" +
             "	class.`name` AS class_name, \n" +
             "	class.`class_id`, \n" +
