@@ -10,36 +10,47 @@
   /></div> -->
 
   <el-table ref="tableRef" row-key="id" :data="tableData" stripe>
-
     <el-table-column prop="exam_name" label="考试名称" sortable />
     <el-table-column prop="id" label="考试编号" />
     <el-table-column prop="start_time" label="考试时间" sortable column-key="start_time" :filters="timeFilterOptions()"
-      :filter-method="filterHandler" >
-    
+      :filter-method="filterHandler">
       <template #default="{ row }">
         {{formatDateTime(row.start_time)}}
       </template>
-    
     </el-table-column>
-    <el-table-column prop="exam_type" label="考试方式" sortable :filters="typeFilterOptions" :filter-method="filterHandler" >
+    <el-table-column prop="exam_type" label="考试方式" sortable :filters="typeFilterOptions" :filter-method="filterHandler">
       <template #default="scope">
-       {{ getExamType(scope.row.exam_type) }}
+        {{ getExamType(scope.row.exam_type) }}
       </template>
     </el-table-column>
-    <el-table-column prop="operaiton" label="操作">
-      <el-button type="primary" :icon="CaretRight" plain>开始考试</el-button>
+    <el-table-column prop="operation" label="操作">
+      <template #default="scope">
+        <el-popconfirm confirm-button-text="确定" cancel-button-text="取消" :icon="InfoFilled" icon-color="#626AEF"
+          @confirm="startExam(scope.row)" title="确定开始作答吗？">
+          <template #reference>
+            <el-button type="danger" size="small">开始考试</el-button>
+          </template>
+        </el-popconfirm>
+      </template>
     </el-table-column>
-
   </el-table>
+
+  <!-- 倒计时弹出框 -->
+  <el-dialog title="倒计时" v-model="countdownVisible" width="30%" style="height: 30%;">
+    <div>考试将于 {{ countdown }} 秒后开始...</div>
+  </el-dialog>
+
   {{ tableData }}
 </template>
 
 <script lang="ts" setup>
 import { ref, onMounted } from 'vue'
+import { useRouter } from 'vue-router'
 import type { TableColumnCtx, TableInstance } from 'element-plus'
-import { CaretRight, Search } from '@element-plus/icons-vue'
-import { myExam } from '../../../requests/api';
-import { getCookie ,getExamType,formatDateTime} from '../utils/tool'
+import { CaretRight, Search, InfoFilled } from '@element-plus/icons-vue'
+import { myExam, studentPaperProblem } from '../../../requests/api';
+import { getCookie, getExamType, formatDateTime } from '../utils/tool'
+
 interface Exam {
   class_id: string
   id: string
@@ -52,10 +63,15 @@ interface Exam {
   end_time: string
   exam_place: string
 }
+
+const router = useRouter()
+const tableData = ref<Exam[]>([])
+const countdownVisible = ref(false)
+const countdown = ref(3)
+
 onMounted(async () => {
   loadMyExam()
 });
-
 
 const loadMyExam = async () => {
   console.log('加载考试列表');
@@ -69,12 +85,27 @@ const loadMyExam = async () => {
       // 在这里处理返回的数据
       return tableData.value
     })
-
   } catch (error) {
     console.error('加载考试列表出错：', error);
     throw error; // 抛出错误，交给调用方处理
   }
 };
+
+const startExam = async (row) => {
+  console.log('开始考试倒计时');
+  countdown.value = 3
+  countdownVisible.value = true
+
+  const interval = setInterval(() => {
+    if (countdown.value > 0) {
+      countdown.value -= 1
+    } else {
+      clearInterval(interval)
+      countdownVisible.value = false
+      router.push(`/exam/`)
+    }
+  }, 1000)
+}
 
 const tableRef = ref<TableInstance>()
 
@@ -85,7 +116,6 @@ const resetDateFilter = () => {
 const clearFilter = () => {
   tableRef.value!.clearFilter()
 }
-
 
 const filterTag = (value: string, row: Exam) => {
   return getTag(row.score) === value
@@ -98,7 +128,6 @@ const filterHandler = (
   const property = column['property']
   return row[property] === value
 }
-
 
 const getTag = (score: number): string => {
   if (score >= 90) return '优'
@@ -130,7 +159,5 @@ const timeFilterOptions = () => {
   ]
   return options
 }
-
-const tableData= ref<Exam>([])
 
 </script>
