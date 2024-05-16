@@ -4,6 +4,7 @@
       创建试卷
     </el-button>
   </div>
+  
   <el-dialog v-model="dialogFormVisible" title="编辑试卷" width="1680" draggable>
     <el-form ref="ruleFormRef" style="max-width: 600px" :model="ruleForm" :rules="rules" label-width="auto"
       class="demo-ruleForm" :size="formSize" status-icon>
@@ -86,7 +87,11 @@
     <el-table-column prop="id" label="试卷ID" width="150" />
     <el-table-column prop="paper_name" label="试卷名称" width="480" sortable />
     <el-table-column prop="create_time" label="创建时间" sortable width="680" column-key="start_time"
-      :filters="timeFilterOptions()" :filter-method="filterHandler" />
+      :filters="timeFilterOptions()" :filter-method="filterHandler">
+      <template #default="{ row }">
+        {{formatDateTime(row.create_time)}}
+      </template>
+    </el-table-column>
     <el-table-column prop="operaiton" label="操作">
       <template #default="scope">
         <el-button type="primary" :icon="Edit" size="small" @click="editPaper(scope.row)">编辑</el-button>
@@ -106,9 +111,9 @@
 import { reactive, ref, watch, onMounted } from 'vue'
 import type { ComponentSize, FormInstance, FormRules, CheckboxValueType} from 'element-plus'
 import { ElNotification ,ElMessage} from 'element-plus'
-import { examList, loadClass, paperList, paperProblem, problemList, savePaperProblem } from '../../../requests/api';
-import { getCookie, getExamType, getProblemTag, getProblemTagType, addIndex, addBlank } from '../utils/tool'
-import { Delete,Edit,} from '@element-plus/icons-vue'
+import { deletePaper, examList, loadClass, paperList, paperProblem, problemList, savePaperProblem } from '../../../requests/api';
+import { getCookie, getExamType, getProblemTag, getProblemTagType, addIndex, addBlank,formatDateTime } from '../utils/tool'
+import { Delete,Edit,InfoFilled} from '@element-plus/icons-vue'
 const checkAll = ref(false)
 const indeterminate = ref(false)
 const value = ref<CheckboxValueType[]>([])
@@ -201,17 +206,26 @@ const editPaper = async (paper) => {
 }
 
 const removePaper = async (paper) => {
-  dialogFormVisible.value = true
-  ruleForm.paper_name = paper.paper_name
-  ruleForm.id = paper.id
+  console.log("删除试卷")
   try {
-    await paperProblem({
+    await deletePaper({
       paperId: paper.id
     }).then(data => {
-      previewProblemList.value = data.data.data
-      console.log('获取的数据：', previewProblemList.value);
-      // 在这里处理返回的数据
-      return previewProblemList.value
+      if (data.data.code == 200) {
+        ElMessage({
+          showClose: true,
+          message: data.data.message,
+          type: 'success',
+        })
+        loadPaperList()
+      }
+      else {
+        ElMessage({
+          showClose: true,
+          message: data.data.message,
+          type: 'danger',
+        })
+      }
     })
 
   } catch (error) {
@@ -394,6 +408,10 @@ const timeFilterOptions = () => {
   ]
   return options
 }
+const checkLogin = () => {
+  if (!getCookie('isLoggedIn') === 'true' || getCookie('role') !== '1')
+    router.push('/');
+}
 
 const handleSizeChange = (val: number) => {
   console.log(`${val} items per page`)
@@ -404,6 +422,7 @@ const handleCurrentChange = (val: number) => {
 
 onMounted(async () => {
   loadPaperList()
+  checkLogin()
 });
 
 </script>
