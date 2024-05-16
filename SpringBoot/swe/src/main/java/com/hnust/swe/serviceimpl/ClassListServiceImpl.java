@@ -80,6 +80,14 @@ public class ClassListServiceImpl implements ClassListService {
     @Override
     public List<StudentClassListResult> loadMyClassList(String account) {
         List<StudentClassListResult> result = classListMapper.loadMyClassList(account);
+
+        for (StudentClassListResult studentClassListResult : result) {
+
+            int num=classListMapper.getStudentListByClassId(studentClassListResult.getClass_id()).size();
+            studentClassListResult.setClass_num(num);
+            
+        }
+        
         System.out.println("加载班级list");
 
         return result;
