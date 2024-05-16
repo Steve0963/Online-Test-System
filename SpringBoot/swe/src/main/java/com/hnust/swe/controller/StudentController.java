@@ -80,6 +80,16 @@ return  examService.examList(id);
     }
 
 
+    @PostMapping("/myPaperProblem")
+    public ApiResult loadPaperProblem(@RequestBody Map<String, String> classEntity) {
+        System.out.println(classEntity);
+        String id = classEntity.get(FormParameter.Paper.ID);
+
+    return  examService.studentPaperProblem(id);
+
+    }
+
+
 
 
 }

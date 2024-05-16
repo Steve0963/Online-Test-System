@@ -7,7 +7,6 @@ import com.hnust.swe.entity.PaperListResult;
 import com.hnust.swe.entity.ProblemListResult;
 import com.hnust.swe.entity.ScoreListResult;
 import com.hnust.swe.entity.StudentListResult;
-import com.hnust.swe.entity.FormParameter.Paper;
 import com.hnust.swe.mapper.ExamMapper;
 
 import com.hnust.swe.service.ExamService;
@@ -193,6 +192,30 @@ public class ExamServiceImpl implements ExamService {
         if (problemIdList != null)
             for (Integer problemId : problemIdList) {
                 ProblemListResult problem = examMapper.getProblemById(problemId);
+                problemList.add(problem);
+            }
+        else
+            return ApiResultHandler.buildApiResult(400, "暂无题目！", null);
+
+        if (problemList.size() != 0) {
+            return ApiResultHandler.buildApiResult(200, "请求成功", problemList);
+        }
+        return ApiResultHandler.buildApiResult(400, "暂无题目！", null);
+
+    }
+
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public ApiResult<ProblemListResult> studentPaperProblem(String paperid) {
+
+        List<Integer> problemIdList = examMapper.getProblemIdByPaperId(paperid);
+        List<ProblemListResult> problemList = new LinkedList<>();
+        if (problemIdList != null)
+            for (Integer problemId : problemIdList) {
+                ProblemListResult problem = examMapper.getProblemById(problemId);
+problem.setAnswer(null);
+problem.setExplain(null);
                 problemList.add(problem);
             }
         else

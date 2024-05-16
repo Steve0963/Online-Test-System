@@ -20,7 +20,7 @@ public interface ExamService {
 
     public ApiResult <StudentListResult> studentList(String createrid);
     public ApiResult <ProblemListResult> paperProblemList(String paperid);
-
+    public ApiResult <ProblemListResult> studentPaperProblem(String paperid);
     public ApiResult <ScoreListResult> scoreList(String studentId);
 
     public ApiResult <ExamListResult> teacherExamList(String teacherId);
