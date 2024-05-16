@@ -240,3 +240,17 @@ export const register = (formData) => {
         throw error;
       });
   };
+
+
+  export const deletePaper= (formData) => {
+    const url = `${baseUrl}/teacher/deletePaper`;
+  console.log(formData)
+    return axios.post(url, formData)
+      .then(response => {
+        return response
+      })
+      .catch(error => {
+        console.error('Error submitting form:', error);
+        throw error;
+      });
+  };
