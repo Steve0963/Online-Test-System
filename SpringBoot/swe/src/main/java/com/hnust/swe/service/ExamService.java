@@ -35,5 +35,8 @@ public interface ExamService {
 
     public ApiResult <ExamListResult> deleteExam(String exam);
 
+    public ApiResult <PaperListResult> deletePaper(String exam);
+
+
 
 }

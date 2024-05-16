@@ -145,6 +145,9 @@ public interface ExamMapper {
     @Delete("Delete from exam_class where " + "exam_id = #{examId}")
     public void deleteExamClassByExamId(String examId);
 
+    @Delete("Delete from papers where " + "id = #{paperId}")
+    public void deletePaperById(String paperId);
+
     @Update("update papers set paper_name = #{paper_name} " + "where id = #{id}")
     public void updatePaper(PaperListResult paper);
 

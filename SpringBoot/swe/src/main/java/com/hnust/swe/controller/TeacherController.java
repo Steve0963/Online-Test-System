@@ -132,6 +132,17 @@ return  examService.teacherExamList(id);
     }
 
 
+    @PostMapping("/teacher/deletePaper")
+    public ApiResult deletePaper(@RequestBody Map<String, String> classEntity) {
+        System.out.println(classEntity);
+        String paper = classEntity.get(FormParameter.Paper.ID);
+        //System.out.println(exam);
+
+    return  examService.deletePaper(paper);
+
+    }
+
+
 
 
 

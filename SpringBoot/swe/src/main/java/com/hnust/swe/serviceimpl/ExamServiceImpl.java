@@ -7,6 +7,7 @@ import com.hnust.swe.entity.PaperListResult;
 import com.hnust.swe.entity.ProblemListResult;
 import com.hnust.swe.entity.ScoreListResult;
 import com.hnust.swe.entity.StudentListResult;
+import com.hnust.swe.entity.FormParameter.Paper;
 import com.hnust.swe.mapper.ExamMapper;
 
 import com.hnust.swe.service.ExamService;
@@ -277,6 +278,24 @@ public class ExamServiceImpl implements ExamService {
 
             examMapper.deleteExamClassByExamId(exam);
             examMapper.deleteExamByExamId(exam);
+            return ApiResultHandler.buildApiResult(200, "删除成功", null);
+        } catch (Exception e) {
+            // TODO: handle exception
+            return ApiResultHandler.buildApiResult(400, "删除失败，未知错误！", null);
+
+        }
+
+    }
+
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public ApiResult<PaperListResult> deletePaper(String paper) {
+
+        try {
+
+            examMapper.deletePaperProblemByPaperId(paper);
+            examMapper.deletePaperById(paper);
             return ApiResultHandler.buildApiResult(200, "删除成功", null);
         } catch (Exception e) {
             // TODO: handle exception
