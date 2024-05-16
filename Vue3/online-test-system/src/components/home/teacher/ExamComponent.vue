@@ -92,7 +92,7 @@
     <el-table-column prop="start_time" label="考试时间" sortable width="480" column-key="start_time"
       :filters="timeFilterOptions()" :filter-method="filterHandler">
       <template #default="{ row }">
-        {{ formatExamTime(row.start_time, row.end_time) }}
+       {{formatDateTime(row.start_time)}}----{{formatDateTime(row.end_time) }}
       </template>
     </el-table-column>
     <el-table-column prop="operaiton" label="操作">
@@ -112,10 +112,10 @@
 
 <script lang="ts" setup>
 import { reactive, ref, watch, onMounted } from 'vue'
-import { Delete, Edit, } from '@element-plus/icons-vue'
+import { Delete, Edit,InfoFilled } from '@element-plus/icons-vue'
 import type { ComponentSize, FormInstance, FormRules, CheckboxValueType, CaretRight } from 'element-plus'
 import { deleteExam, examList, loadClass, paperList, saveExam } from '../../../requests/api';
-import { getCookie, getExamType,calculateExamDuration ,formatExamTime} from '../utils/tool'
+import { getCookie, getExamType,calculateExamDuration ,formatExamTime,formatDateTime} from '../utils/tool'
 import { ElNotification ,ElMessage} from 'element-plus'
 
 const checkAll = ref(false)
@@ -230,6 +230,10 @@ watch(value, (val) => {
     indeterminate.value = true
   }
 })
+const checkLogin = () => {
+  if (!getCookie('isLoggedIn') === 'true' || getCookie('role') !== '1')
+    router.push('/');
+}
 
 const handleCheckAll = (val: CheckboxValueType) => {
   indeterminate.value = false
@@ -441,6 +445,7 @@ onMounted(async () => {
   loadExamList()
   loadPaperList()
   loadClassList()
+  checkLogin()
 });
 
 </script>

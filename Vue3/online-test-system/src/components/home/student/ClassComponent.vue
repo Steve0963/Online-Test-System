@@ -33,13 +33,19 @@
       </template>
     </el-table-column>
     <el-table-column prop="join_time" label="加入时间" sortable width="280" column-key="join_time"
-      :filters="timeFilterOptions()" :filter-method="filterHandler" />
+      :filters="timeFilterOptions()" :filter-method="filterHandler" >
+
+      <template #default="{ row }">
+        {{formatDateTime(row.join_time)}}
+      </template>
+    
+    </el-table-column>
   </el-table>
 </template>
 
 <script lang="ts" setup>
 import { reactive, ref, onMounted } from 'vue'
-import { getCookie } from '../utils/tool'
+import { getCookie,formatDateTime } from '../utils/tool'
 import { useRouter } from 'vue-router';
 import { joinClass,  myClass } from '../../../requests/api';
 import type { FormInstance, FormRules, TableColumnCtx, TableInstance } from 'element-plus'

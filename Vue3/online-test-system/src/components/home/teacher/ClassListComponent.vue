@@ -43,7 +43,12 @@
     </el-table-column>
 
     <el-table-column prop="creat_time" label="创建时间" sortable width="280" column-key="creat_time"
-      :filters="timeFilterOptions()" :filter-method="filterHandler" />
+      :filters="timeFilterOptions()" :filter-method="filterHandler" >
+      <template #default="{ row }">
+        {{formatDateTime(row.creat_time)}}
+      </template>
+    
+    </el-table-column>
 
       <el-table-column prop="operaiton" label="操作">
         <template #default="scope">
@@ -63,10 +68,10 @@
 
 <script lang="ts" setup>
 import { reactive, onMounted , ref } from 'vue'
-import { getCookie } from '../utils/tool'
+import { getCookie, formatDateTime} from '../utils/tool'
 import { useRouter } from 'vue-router';
 import { creatClass, deleteClassById, loadClass } from '../../../requests/api';
-import { Delete,Edit,} from '@element-plus/icons-vue'
+import { Delete,Edit,InfoFilled} from '@element-plus/icons-vue'
 import type {FormInstance, FormRules, TableColumnCtx, TableInstance } from 'element-plus'
 import {ElMessage} from 'element-plus'
 

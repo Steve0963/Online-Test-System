@@ -14,7 +14,13 @@
     <el-table-column prop="exam_name" label="考试名称" sortable />
     <el-table-column prop="id" label="考试编号" />
     <el-table-column prop="start_time" label="考试时间" sortable column-key="start_time" :filters="timeFilterOptions()"
-      :filter-method="filterHandler" />
+      :filter-method="filterHandler" >
+    
+      <template #default="{ row }">
+        {{formatDateTime(row.start_time)}}
+      </template>
+    
+    </el-table-column>
     <el-table-column prop="exam_type" label="考试方式" sortable :filters="typeFilterOptions" :filter-method="filterHandler" >
       <template #default="scope">
        {{ getExamType(scope.row.exam_type) }}
@@ -25,6 +31,7 @@
     </el-table-column>
 
   </el-table>
+  {{ tableData }}
 </template>
 
 <script lang="ts" setup>
@@ -32,7 +39,7 @@ import { ref, onMounted } from 'vue'
 import type { TableColumnCtx, TableInstance } from 'element-plus'
 import { CaretRight, Search } from '@element-plus/icons-vue'
 import { myExam } from '../../../requests/api';
-import { getCookie ,getExamType} from '../utils/tool'
+import { getCookie ,getExamType,formatDateTime} from '../utils/tool'
 interface Exam {
   class_id: string
   id: string
