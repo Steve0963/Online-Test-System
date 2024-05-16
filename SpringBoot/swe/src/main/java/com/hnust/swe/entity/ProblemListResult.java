@@ -12,8 +12,8 @@ public class ProblemListResult {
 	private String id;
 	private String desc;
 	private String type;
-	//private String answer;
-	//private String explain;
+	private String answer;
+	private String explain;
 	private Date update_time;
 	private String creater_id;
 	private Date create_time;
