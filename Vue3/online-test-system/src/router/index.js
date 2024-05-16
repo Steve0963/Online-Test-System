@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import LoginView from '../views/LoginView.vue'
+import ExamView from '../views/ExamView.vue'
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -39,8 +40,6 @@ const router = createRouter({
           name: '我的成绩'
         },
 
-
-
         {
           path: '/home/teacher',
           component: () => import('../components/home/teacher/MainComponent.vue'),
@@ -66,23 +65,20 @@ const router = createRouter({
           component: () => import('../components/home/teacher/PaperListComponent.vue'),
           name: '试卷列表'
         },
-        {
-          path: '/home/teacher/papercreate',
-          component: () => import('../components/home/teacher/PaperCreateComponent.vue'),
-          name: '创建试卷'
-        },
+    
         {
           path: '/home/teacher/problemlist',
           component: () => import('../components/home/teacher/ProblemListComponent.vue'),
           name: '试题列表'
         },
 
-        {
-          path: '/home/teacher/problemcreate',
-          component: () => import('../components/home/teacher/ProblemCreateComponent.vue'),
-          name: '创建试题'
-        },
       ]
+    },
+
+    {
+      path: '/exam',
+      name: 'exam',
+      component: ExamView
     },
     
   ]
