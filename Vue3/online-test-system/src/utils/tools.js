@@ -163,3 +163,11 @@ export function getCurrentPage(){
     if (answer=='1')return "正确"
     return "错误"
   }
+
+  export function getIndexCharacter(index) {
+    if (index==1)return "一."
+    if (index==2)return "二."
+    if (index==3)return "三."
+    if (index==4)return "四." 
+    return "错误"
+  }
