@@ -171,6 +171,19 @@ export const register = (formData) => {
       });
   };
 
+  export const studentPaperProblem = (formData) => {
+    const url = `${baseUrl}/myPaperProblem`;
+  console.log(formData)
+    return axios.post(url, formData)
+      .then(response => {
+        return response
+      })
+      .catch(error => {
+        console.error('Error submitting form:', error);
+        throw error;
+      });
+  };
+
 
   export const savePaperProblem = (formData) => {
     const url = `${baseUrl}/teacher/savePaperProblem`;
