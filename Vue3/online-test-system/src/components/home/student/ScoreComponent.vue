@@ -14,15 +14,21 @@
         </template>
       </el-table-column>
   
-      <el-table-column prop="start_time" label="考试时间" sortable width="180" column-key="start_time" :filters="timeFilterOptions()" :filter-method="filterHandler" />
-  
+      <el-table-column prop="start_time" label="考试时间" sortable width="180" column-key="start_time" :filters="timeFilterOptions()" :filter-method="filterHandler" >
+        <template #default="scope">
+          {{ formatDateTime(scope.row.start_time) }}
+        </template>
+      </el-table-column>
+      <template #empty>
+        暂无成绩！
+     </template>
     </el-table>
   </template>
   
   <script lang="ts" setup>
   import { ref,onMounted } from 'vue'
   import type { TableColumnCtx, TableInstance } from 'element-plus'
-  import { getCookie,getTagType,getTag } from '../utils/tool'
+  import { getCookie,getTagType,getTag,formatDateTime } from '../utils/tool'
 import {   myScore } from '../../../requests/api';
   interface User {
     exam_score: number
