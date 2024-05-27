@@ -20,6 +20,13 @@ export function getCurrentPage(){
   return localStorage.getItem('page')
   }
 
+  export function setCookie(key,value){
+    localStorage.setItem(key,value)
+  }
+
+  export function getVariable(key){
+    return localStorage.getItem(key)
+  }
 
  export function getExamType (type){
     if(type==1) return "线上"
@@ -134,6 +141,9 @@ export function getCurrentPage(){
       return `${optionLetters[index]}. ${option}`;
     });
   }
+
+
+
 
   export function getAnswerOption(optionsStr, answer) {
     const optionLetters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';

@@ -21,6 +21,16 @@ export function getCurrentPage(){
   }
 
 
+  export function setCookie(key,value){
+    localStorage.setItem(key,value)
+  }
+
+  export function getVariable(key){
+    return localStorage.getItem(key)
+  }
+
+
+
  export function getExamType (type){
     if(type==1) return "线上"
     return "线下"
@@ -135,6 +145,19 @@ export function getCurrentPage(){
     });
   }
 
+
+  export function formatAnswer(formattedOptionsStr) {
+    const formattedOptionsArray = formattedOptionsStr.split(';').filter(option => option.trim() !== '');
+
+  const unformattedOptionsArray = formattedOptionsArray.map(formattedOption => {
+    // 去掉前面的字母、点和空格
+    return formattedOption.replace(/^[A-Z]\.\s*/, '');
+  });
+
+  // 将内容用分号拼接起来，并确保最后一个字符是分号
+  return unformattedOptionsArray.join(';') + ';';
+  }
+  
   export function getAnswerOption(optionsStr, answer) {
     const optionLetters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
   
