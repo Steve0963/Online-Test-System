@@ -88,6 +88,17 @@ return  examService.examList(id);
     return  examService.studentPaperProblem(id);
 
     }
+    @SuppressWarnings("unchecked")
+    @PostMapping("/submitPaperAnswer")
+    public ApiResult submitPaperAnswer(@RequestBody Map<String, Object> answerEntity) {
+        String studentId = answerEntity.get(FormParameter.Student.ID).toString();
+        String examId = answerEntity.get(FormParameter.Exam.ID).toString();
+        String paperId = answerEntity.get(FormParameter.Paper.ID).toString();
+        Map<String,String> answerMap=(Map<String, String>) answerEntity.get(FormParameter.Paper.PAPER);
+//System.out.println(answerEntity.get(FormParameter.Paper.PAPER));
+    return  examService.submitPaperAnswer(studentId,examId,paperId,answerMap);
+
+    }
 
 
 

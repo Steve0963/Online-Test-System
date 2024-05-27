@@ -36,6 +36,7 @@ public interface ExamService {
     public ApiResult <ExamListResult> deleteExam(String exam);
 
     public ApiResult <PaperListResult> deletePaper(String exam);
+    public ApiResult <PaperListResult> submitPaperAnswer(String stuid,String examid,String paperid,Map<String,String> answer);
 
 
 

@@ -21,5 +21,6 @@ public class ExamListResult {
 	private String paper_id; 
 	private Date end_time; 
 	private String exam_place;
+	private Integer finished;
 
 }

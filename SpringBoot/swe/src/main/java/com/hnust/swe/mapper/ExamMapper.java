@@ -2,9 +2,11 @@ package com.hnust.swe.mapper;
 
 import com.hnust.swe.entity.ExamListResult;
 import com.hnust.swe.entity.PaperListResult;
+import com.hnust.swe.entity.PaperProblem;
 import com.hnust.swe.entity.ProblemListResult;
 import com.hnust.swe.entity.ScoreListResult;
 import com.hnust.swe.entity.StudentListResult;
+import com.hnust.swe.entity.StudentPaperAnswer;
 
 import java.util.List;
 
@@ -120,6 +122,38 @@ public interface ExamMapper {
             "WHERE\n" +
             "	id = #{problemId}")
     public ProblemListResult getProblemById(Integer problemId);
+
+    @Select("SELECT\n" +
+            "	paper_problems.*\n" +
+            "FROM\n" +
+            "	paper_problems\n" +
+            "WHERE\n" +
+            "	paper_problems.paper_id = #{paperId} AND\n" +
+            "	paper_problems.problem_id = #{problemId}")
+    public PaperProblem getProblemScoreById(String problemId,String paperId);
+
+
+
+    @Insert("INSERT INTO student_paper_answer (stu_id, paper_problem_id, answer, exam_id, score) " +
+            "VALUES (#{stu_id}, #{paper_problem_id}, #{answer}, #{ exam_id}, #{score})")
+    public void addStudentPaperAnswer(StudentPaperAnswer answer);
+
+
+    @Select("SELECT\n" +
+    "	student_paper_answer.*\n" +
+    "FROM\n" +
+    "	student_paper_answer\n" +
+    "WHERE\n" +
+    "	student_paper_answer.stu_id = #{stuId} AND\n" +
+    "	student_paper_answer.exam_id = #{examId}")
+public List<PaperProblem> getStudentPaperAnswerById(Integer stuId,Integer examId);
+
+
+    @Insert("INSERT INTO score (student_id, exam_id, exam_score, finished) " +
+            "VALUES (#{student_id}, #{exam_id}, #{exam_score}, #{finished})")
+    public void addExamScore(Integer student_id,Integer exam_id,Double exam_score,Integer finished);
+
+
 
     @Insert("INSERT INTO papers (paper_name, creater_id) " +
             "VALUES (#{paper_name}, #{creater_id})")

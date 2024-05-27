@@ -7,6 +7,7 @@ import com.hnust.swe.entity.PaperListResult;
 import com.hnust.swe.entity.ProblemListResult;
 import com.hnust.swe.entity.ScoreListResult;
 import com.hnust.swe.entity.StudentListResult;
+import com.hnust.swe.entity.StudentPaperAnswer;
 import com.hnust.swe.mapper.ExamMapper;
 
 import com.hnust.swe.service.ExamService;
@@ -39,10 +40,19 @@ public class ExamServiceImpl implements ExamService {
                     for (Integer examId : examIdList) {
                         ExamListResult exam = examMapper.getExamListByExamId(examId);
                         allExamList.add(exam);
-
                     }
                 }
             }
+            for (ExamListResult exam : allExamList) {
+                if(examMapper.getStudentPaperAnswerById(Integer.parseInt(studenId),Integer.parseInt(exam.getId()) ).size()!=0){
+                    exam.setFinished(1);
+                }
+                else{
+                    exam.setFinished(0);
+                }
+
+            }
+
             return ApiResultHandler.buildApiResult(200, "请求成功", allExamList);
 
         }
@@ -204,7 +214,6 @@ public class ExamServiceImpl implements ExamService {
 
     }
 
-
     @SuppressWarnings("unchecked")
     @Override
     public ApiResult<ProblemListResult> studentPaperProblem(String paperid) {
@@ -214,8 +223,8 @@ public class ExamServiceImpl implements ExamService {
         if (problemIdList != null)
             for (Integer problemId : problemIdList) {
                 ProblemListResult problem = examMapper.getProblemById(problemId);
-problem.setAnswer(null);
-problem.setExplain(null);
+                problem.setAnswer(null);
+                problem.setExplain(null);
                 problemList.add(problem);
             }
         else
@@ -242,6 +251,8 @@ problem.setExplain(null);
                 examMapper.addProblemToPaper(paper.getId(), problem.get("id"), createrId);
             }
 
+            return ApiResultHandler.buildApiResult(200, "创建成功！", null);
+
         } else {
             PaperListResult paper = new PaperListResult();
             paper.setId(paperid);
@@ -252,10 +263,8 @@ problem.setExplain(null);
             for (Map<String, String> problem : problems) {
                 examMapper.addProblemToPaper(paperid, problem.get("id"), createrId);
             }
-
+            return ApiResultHandler.buildApiResult(200, "保存成功！", null);
         }
-
-        return ApiResultHandler.buildApiResult(200, "保存成功！", null);
 
     }
 
@@ -292,7 +301,6 @@ problem.setExplain(null);
 
     }
 
-
     @SuppressWarnings("unchecked")
     @Override
     public ApiResult<ExamListResult> deleteExam(String exam) {
@@ -310,7 +318,6 @@ problem.setExplain(null);
 
     }
 
-
     @SuppressWarnings("unchecked")
     @Override
     public ApiResult<PaperListResult> deletePaper(String paper) {
@@ -323,6 +330,50 @@ problem.setExplain(null);
         } catch (Exception e) {
             // TODO: handle exception
             return ApiResultHandler.buildApiResult(400, "删除失败，未知错误！", null);
+
+        }
+
+    }
+
+
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public ApiResult<PaperListResult> submitPaperAnswer(String stuId,String examId,String paperId,Map<String,String> answer) {
+
+        try {
+
+            System.out.println(answer);
+            double totalScore=0.0;
+            for (Map.Entry<String, String> entry : answer.entrySet()) {
+                StudentPaperAnswer myPaperAnswer=new StudentPaperAnswer();
+                String problemId = entry.getKey();
+                String myAnswer = entry.getValue();
+                myPaperAnswer.setStu_id(Integer.parseInt(stuId));
+                myPaperAnswer.setPaper_problem_id(examMapper.getProblemScoreById(problemId,paperId).getId());
+                myPaperAnswer.setAnswer(myAnswer);
+                myPaperAnswer.setExam_id(Integer.parseInt(examId));
+                String correctAnswer=examMapper.getProblemById(Integer.parseInt(problemId)).getAnswer();
+                
+                if(myAnswer.equals(correctAnswer)){
+                    Double score=examMapper.getProblemScoreById(problemId,paperId).getProblem_score();
+                    totalScore+=score;
+                    myPaperAnswer.setScore(score);
+                    examMapper.addStudentPaperAnswer(myPaperAnswer);
+                }
+                else{
+                    myPaperAnswer.setScore(0.0);
+                    examMapper.addStudentPaperAnswer(myPaperAnswer);
+                }
+            }
+
+           System.out.println("总分："+totalScore);
+           examMapper.addExamScore(Integer.parseInt(stuId),Integer.parseInt(examId),totalScore,0);
+            return ApiResultHandler.buildApiResult(200, "交卷成功", null);
+        } catch (Exception e) {
+            // TODO: handle exception
+            System.out.println(e);
+            return ApiResultHandler.buildApiResult(400, "交卷失败，未知错误！", null);
 
         }
 
