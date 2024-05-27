@@ -1,12 +1,12 @@
 <script lang="ts" setup>
-import { useRouter} from 'vue-router';
+import { useRouter } from 'vue-router';
 import { Ref, reactive, ref } from 'vue'
 import type { FormInstance, FormRules } from 'element-plus'
 import type { TabsPaneContext } from 'element-plus'
-import { User, Lock} from '@element-plus/icons-vue'
-import { login,register } from '../requests/api'
+import { User, Lock } from '@element-plus/icons-vue'
+import { login, register } from '../requests/api'
 import { useStore } from 'vuex';
-
+import { ElMessage } from 'element-plus'
 const activeName = ref('login')
 const loginFormRef = ref<FormInstance>()
 const RegisterFormRef = ref<FormInstance>()
@@ -21,7 +21,7 @@ const loginForm = reactive({
 const RegisterForm = reactive({
     account: '',
     password: '',
-    crt_pass:'',
+    crt_pass: '',
 })
 
 const handleClick = (tab: TabsPaneContext, event: Event) => {
@@ -59,11 +59,11 @@ const validatePassword = (rule: any, value: any, callback: any) => {
 }
 
 const validateCrt_pass = (rule: any, value: any, callback: any) => {
-    if (RegisterForm.crt_pass!=RegisterForm.password){
+    if (RegisterForm.crt_pass != RegisterForm.password) {
 
         callback(new Error('两次输入不一致'));
     }
-    else{callback();}
+    else { callback(); }
 }
 
 
@@ -77,7 +77,7 @@ const login_rules = reactive<FormRules<typeof loginForm>>({
 const register_rules = reactive<FormRules<typeof RegisterForm>>({
     account: [{ validator: validateAccount, trigger: 'blur' }],
     password: [{ validator: validatePassword, trigger: 'change' }],
-    crt_pass:[{ validator: validateCrt_pass, trigger: 'change' }]
+    crt_pass: [{ validator: validateCrt_pass, trigger: 'change' }]
 })
 
 const submitLogin = (formEl: FormInstance | undefined) => {
@@ -85,37 +85,49 @@ const submitLogin = (formEl: FormInstance | undefined) => {
     formEl.validate(async (valid) => {
         if (valid) {
             console.log('登录')
-            const result=await (await login(loginForm)).data.data
+            const result = await (await login(loginForm)).data
             console.log(result)
 
-            if(result != null) {
-                store.dispatch('login', { role: result.role, account: result.account,name:result.name ,id:result.id});
-                console.log( store.state)
-          switch(result.role) {
-            case 0:  //管理员
+            if (result.code == 200) {
             
-              console.log("跳转")
-              router.push('/home');
-              
-              break
-            case 1: //教师
-            
-              console.log("跳转")
-              router.push('/home/teacher/');
-              break
-            case 2: //学生
-            
-              
-              console.log("跳转")
-              router.push('/home/student/test');
-              break
-          }
-        }
+                ElMessage({
+                    showClose: true,
+                    message: '登陆成功',
+                    type: 'success',
+                })
+                store.dispatch('login', { role: result.data.role, account: result.data.account, name: result.data.name, id: result.data.id });
+                console.log(store.state)
+                switch (result.data.role) {
+                    case 0:  //管理员
 
-        if(result == null) { //错误提示
-          
-        }
-            
+                        console.log("跳转")
+                        router.push('/home');
+
+                        break
+                    case 1: //教师
+
+                        console.log("跳转")
+                        router.push('/home/teacher/');
+                        break
+                    case 2: //学生
+
+                        console.log("跳转")
+                        router.push('/home/student/test');
+                        break
+                }
+           
+
+
+            }
+            else {
+                ElMessage({
+                    showClose: true,
+                    message: result.message,
+                    type: 'error',
+                })
+            }
+
+
         } else {
             console.log('error submit!')
             return false
@@ -155,7 +167,8 @@ const submitRegister = (formEl: FormInstance | undefined) => {
                     <el-tabs v-model="activeName" class="demo-tabs" @tab-click="handleClick">
 
                         <el-tab-pane label="登录" name="login" class="custom-tab">
-                            <el-form ref="loginFormRef" :model="loginForm" status-icon :rules="login_rules" class="loginForm">
+                            <el-form ref="loginFormRef" :model="loginForm" status-icon :rules="login_rules"
+                                class="loginForm">
 
                                 <el-form-item prop="account">
                                     <el-input v-model="loginForm.account" placeholder="请输入账号" :prefix-icon="User" />
@@ -169,27 +182,25 @@ const submitRegister = (formEl: FormInstance | undefined) => {
                                 <el-form-item>
                                     <el-button type="primary" @click="submitLogin(loginFormRef)">登录</el-button>
                                 </el-form-item>
-                                <el-alert title="Error alert" type="error" center show-icon />
                             </el-form>
                         </el-tab-pane>
 
                         <el-tab-pane label="注册" name="register" class="custom-tab">
-                            <el-form ref="RegisterFormRef" :model="RegisterForm" status-icon :rules="register_rules" label-width="auto"
-                                class="demo-loginForm">
+                            <el-form ref="RegisterFormRef" :model="RegisterForm" status-icon :rules="register_rules"
+                                label-width="auto" class="demo-loginForm">
 
                                 <el-form-item prop="account">
-                                    <el-input v-model="RegisterForm.account" placeholder="请输入账号"
-                                        :prefix-icon="User" />
+                                    <el-input v-model="RegisterForm.account" placeholder="请输入账号" :prefix-icon="User" />
                                 </el-form-item>
 
                                 <el-form-item prop="password">
                                     <el-input v-model="RegisterForm.password" type="password" placeholder="输入密码"
-                                        autocomplete="off" :prefix-icon="Lock" show-password/>
+                                        autocomplete="off" :prefix-icon="Lock" show-password />
                                 </el-form-item>
 
                                 <el-form-item prop="crt_pass">
                                     <el-input v-model="RegisterForm.crt_pass" type="password" placeholder="再次输入"
-                                        autocomplete="off" :prefix-icon="Lock" show-password/>
+                                        autocomplete="off" :prefix-icon="Lock" show-password />
                                 </el-form-item>
 
 
