@@ -16,7 +16,7 @@
         <el-card style="height: 74vh; margin-top: 25px;background-color: #e5d8d8" shadow="always">
           <el-scrollbar height="65vh" style="width: 360px;">
             <div v-for="(type, index) in problemTypeList" :key="type">
-              <div style="padding-bottom: 10px;">{{ index }}.{{ getProblemTag(type) }}</div>
+              <div style="padding-bottom: 10px;">{{ index+1 }}.{{ getProblemTag(type) }}</div>
               <div v-for="row in splitIntoRows(generateButtonGroups(buttonNum)[index].buttons, 6)" :key="row.join('-')"
                 style="margin-bottom: 10px;">
                 <el-button v-for="button in row" :key="button" style="width: 39px; height: 39px;" color="#626aef"
@@ -25,11 +25,11 @@
             </div>
           </el-scrollbar>
           <div style="text-align: center">
-            <el-form ref="submitForm" @submit.native.prevent="handleSubmit">
+            <el-form>
               <el-popconfirm confirm-button-text="确定" cancel-button-text="取消" icon-color="#626AEF"
-                @confirm="handleSubmit" title="确定要交卷吗？">
+                @confirm="submitPaperAnswer" title="确定要交卷吗？">
                 <template #reference>
-                  <el-button type="danger" plain size="large" @click="submitForm">提交试卷</el-button>
+                  <el-button type="danger" plain size="large">提交试卷</el-button>
                 </template>
               </el-popconfirm>
             </el-form>
@@ -46,7 +46,7 @@
             <div v-for="(problem,index) in problemSelectList" :ref="setProblemRef(index, type)">
               <h5 style="margin-bottom: 10px;">{{ index+1 }}.{{ problem.desc }}</h5>
               <div v-for="(option, index) in formatOptions(problem.options)" :key="index">
-                <el-radio v-model="myAnswerList[problem.id]" :label="option">{{ option }}</el-radio>
+                <el-radio v-model="myAnswerList[problem.id]" :label="formatAnswer(option)">{{ option }}</el-radio>
               </div>
             </div>
           </div>
@@ -76,7 +76,9 @@
           
         </div>
       </el-scrollbar>
-        <!-- {{ myAnswerList }} -->
+        {{ myAnswerList }}
+        <!-- {{ problemList }} -->
+        {{ getVariable('examId') }}
       </el-card>
     </el-main>
   </el-container>
@@ -84,8 +86,10 @@
 
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
-import { getProblemTag, getCookie, formatOptions,getIndexCharacter,addBlank } from '../utils/tools';
-import { studentPaperProblem } from '../requests/api';
+import { getProblemTag, getCookie, formatOptions,getIndexCharacter,addBlank,formatAnswer,getVariable,setCookie} from '../utils/tools';
+import { studentPaperProblem, submitPaperAnsewr } from '../requests/api';
+import { ElMessage } from 'element-plus';
+import router from '../router';
 
 const problemTypeList = ref<string[]>([]);
 const buttonNum = ref<number[]>([]);
@@ -97,7 +101,7 @@ const problemJudgeList = ref([]);
 const problemBlankList = ref([]);
 const problemShortList = ref([]);
 
-const myAnswerList = ref([]);
+const myAnswerList = ref({});
 const getProblemId = (type, index) => {
   if (type === '0') {
     return problemSelectList.value[index - 1].id;
@@ -147,7 +151,19 @@ const splitIntoRows = (arr: number[], rowSize: number) => {
   return rows;
 };
 
-const initialDuration = 7200; // 设定初始时长（例如2小时=7200秒）
+const calculateCountdown = () => {
+  const now = new Date(); // 获取当前时间
+  const endTime = new Date(getVariable('end_time')); // 解析考试结束时间字符串为日期对象
+  const diffInMilliseconds = endTime.getTime() - now.getTime(); // 计算时间差，单位为毫秒
+
+  if (diffInMilliseconds > 0) {
+    return Math.floor(diffInMilliseconds / 1000); // 将毫秒转换为秒
+  }
+
+};
+
+
+const initialDuration = calculateCountdown(); // 设定初始时长（例如2小时=7200秒）
 const countdown = ref(initialDuration);
 
 const formatTime = (time: number) => {
@@ -157,41 +173,56 @@ const formatTime = (time: number) => {
   return `${hours}:${minutes}:${seconds}`;
 };
 
-const submitForm = () => {
-  const form = submitFormRef.value;
-  if (form) {
-    form.submit();
-  }
-};
 
-const handleSubmit = () => {
-  alert('试卷提交成功');
-};
-
-
-const locateProblem = (id) => {
-  const problem = ref(myAnswerList.value.find(item => item.problemId === id));
-  return problem.value;
-
-};
-
-const loadMyExam = async () => {
-  console.log('加载考试列表');
+const submitPaperAnswer  = async () => {
+  console.log(myAnswerList.value)
   try {
-    await myExam({
-      studentId: getCookie('id')
+    await submitPaperAnsewr({
+      studentId: getCookie('id'),
+      paperForm: myAnswerList.value,
+      examId:getVariable('examId'),
+      paperId:getVariable('paperId'),
     }).then(data => {
-      console.log('获取的数据：', data);
-      tableData.value = data.data.data
-      console.log('获取的数据：', tableData.value);
-      // 在这里处理返回的数据
-      return tableData.value
+      if (data.data.code == 200) {
+        ElMessage({
+          showClose: true,
+          message: data.data.message,
+          type: 'success',
+        })
+        setCookie('examId', '')
+        setCookie('paperId', '')
+        setCookie('end_time', '')
+        router.push('/home/student/test')
+      }
+      else {
+        ElMessage({
+          showClose: true,
+          message: data.data.message,
+          type: 'error',
+        })
+      }
+
     })
+
   } catch (error) {
-    console.error('加载考试列表出错：', error);
-    throw error; // 抛出错误，交给调用方处理
+    console.error('提交试卷出错！：', error);
+    throw error;
   }
-};
+
+
+}
+const checkLogin = () => {
+  if (!getCookie('isLoggedIn') === 'true') router.push('/'); 
+  else if (getCookie('role') !== '2'){
+    ElMessage({
+      showClose: true,
+      message: '您没有权限访问该页面！',
+      type: 'error',
+    })
+    router.push('/home/teacher/stulist')
+    return false
+  }
+}
 
 
 const loadPaperProblem = async () => {
@@ -204,6 +235,7 @@ const loadPaperProblem = async () => {
       const typeCount: { [key: string]: number } = {};
       problemList.value.forEach((problem: any) => {
         // myAnswerList.value.push({ problemId: problem.id, answer: '' })
+        myAnswerList.value[problem.id]=''
         if (typeCount[problem.type]) {
           typeCount[problem.type]++;
         } else {
@@ -234,15 +266,14 @@ const loadPaperProblem = async () => {
   }
 };
 
-const submitFormRef = ref<InstanceType<typeof HTMLFormElement> | null>(null);
-
 onMounted(() => {
+  if(!checkLogin()) return
   const interval = setInterval(() => {
     if (countdown.value > 0) {
       countdown.value--;
     } else {
       clearInterval(interval);
-      submitForm();
+      submitPaperAnswer()
     }
   }, 1000);
 
