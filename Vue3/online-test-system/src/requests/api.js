@@ -267,3 +267,17 @@ export const register = (formData) => {
         throw error;
       });
   };
+
+
+  export const submitPaperAnsewr= (formData) => {
+    const url = `${baseUrl}/submitPaperAnswer`;
+  console.log(formData)
+    return axios.post(url, formData)
+      .then(response => {
+        return response
+      })
+      .catch(error => {
+        console.error('Error submitting form:', error);
+        throw error;
+      });
+  };
