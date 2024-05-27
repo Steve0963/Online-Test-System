@@ -29,20 +29,20 @@ System.out.println(password);
 
         LoginResult adminRes = loginService.adminLogin(account, password);
         if (adminRes != null) {
-            return ApiResultHandler.buildApiResult(200, "请求成功", adminRes);
+            return ApiResultHandler.buildApiResult(200, "登录成功", adminRes);
         }
 
         LoginResult teacherRes = loginService.teacherLogin(account,password);
         if (teacherRes != null) {
             System.out.println(teacherRes);
-            return ApiResultHandler.buildApiResult(200, "请求成功", teacherRes);
+            return ApiResultHandler.buildApiResult(200, "登录成功", teacherRes);
         } 
         LoginResult studentRes = loginService.studentLogin(account,password);
         System.out.println(studentRes);
         if (studentRes != null) {
-            return ApiResultHandler.buildApiResult(200, "请求成功", studentRes);
+            return ApiResultHandler.buildApiResult(200, "登录成功", studentRes);
         }
 
-        return ApiResultHandler.buildApiResult(400, "请求失败", null);
+        return ApiResultHandler.buildApiResult(400, "账号密码错误！", null);
     }
 }
