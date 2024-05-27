@@ -1,21 +1,11 @@
 <template>
-  <!-- <div style="margin-left: 12px;"><el-input
-    v-model="testName"
-    style="width: 240px"
-    size="medium"
-    placeholder="考试名称"
-    clearable
-    :prefix-icon="Search"
-    @keyup.enter.native="onSearch"
-  /></div> -->
-
-  <el-table ref="tableRef" row-key="id" :data="tableData" stripe>
+  <el-table ref="tableRef" row-key="id" :data="filteredTableData" stripe>
     <el-table-column prop="exam_name" label="考试名称" sortable />
     <el-table-column prop="id" label="考试编号" />
     <el-table-column prop="start_time" label="考试时间" sortable column-key="start_time" :filters="timeFilterOptions()"
       :filter-method="filterHandler">
       <template #default="{ row }">
-        {{formatDateTime(row.start_time)}}
+        {{ formatDateTime(row.start_time) }}
       </template>
     </el-table-column>
     <el-table-column prop="exam_type" label="考试方式" sortable :filters="typeFilterOptions" :filter-method="filterHandler">
@@ -25,31 +15,48 @@
     </el-table-column>
     <el-table-column prop="operation" label="操作">
       <template #default="scope">
-        <el-popconfirm confirm-button-text="确定" cancel-button-text="取消" :icon="InfoFilled" icon-color="#626AEF"
-          @confirm="startExam(scope.row)" title="确定开始作答吗？">
+        <el-popconfirm
+          confirm-button-text="确定"
+          cancel-button-text="取消"
+          :icon="InfoFilled"
+          icon-color="#626AEF"
+          @confirm="startExam(scope.row)"
+          title="确定开始作答吗？"
+        >
           <template #reference>
-            <el-button type="danger" size="small">开始考试</el-button>
+            <el-button
+              type="danger"
+              size="small"
+              :disabled="!canStartExam(scope.row)"
+            >
+              {{ getExamStatus(scope.row) }}
+            </el-button>
           </template>
         </el-popconfirm>
       </template>
     </el-table-column>
+    <template #empty>
+       暂无未完成的考试！
+    </template>
   </el-table>
 
   <!-- 倒计时弹出框 -->
-  <el-dialog title="倒计时" v-model="countdownVisible" width="30%" style="height: 30%;">
+  <el-dialog  v-model="countdownVisible" width="30%" style="height: 30%;">
     <div>考试将于 {{ countdown }} 秒后开始...</div>
   </el-dialog>
 
   {{ tableData }}
+  {{ getVariable('examId') }}
+  asd
 </template>
 
 <script lang="ts" setup>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, computed } from 'vue'
 import { useRouter } from 'vue-router'
 import type { TableColumnCtx, TableInstance } from 'element-plus'
 import { CaretRight, Search, InfoFilled } from '@element-plus/icons-vue'
-import { myExam, studentPaperProblem } from '../../../requests/api';
-import { getCookie, getExamType, formatDateTime } from '../utils/tool'
+import { myExam } from '../../../requests/api';
+import { getCookie, getExamType, formatDateTime, setCookie, getVariable } from '../utils/tool'
 
 interface Exam {
   class_id: string
@@ -62,15 +69,20 @@ interface Exam {
   paper_id: string
   end_time: string
   exam_place: string
+  finished: number
 }
 
 const router = useRouter()
 const tableData = ref<Exam[]>([])
 const countdownVisible = ref(false)
 const countdown = ref(3)
+const currentTime = ref(new Date())
 
 onMounted(async () => {
-  loadMyExam()
+  await loadMyExam()
+  setInterval(() => {
+    currentTime.value = new Date()
+  }, 1000)
 });
 
 const loadMyExam = async () => {
@@ -80,8 +92,8 @@ const loadMyExam = async () => {
       studentId: getCookie('id')
     }).then(data => {
       console.log('获取的数据：', data);
-      tableData.value = data.data.data
-      console.log('获取的数据：', tableData.value);
+      tableData.value = data.data.data.filter(exam => exam.finished !== 1)
+      console.log('过滤后的数据：', tableData.value);
       // 在这里处理返回的数据
       return tableData.value
     })
@@ -92,7 +104,6 @@ const loadMyExam = async () => {
 };
 
 const startExam = async (row) => {
-  console.log('开始考试倒计时');
   countdown.value = 3
   countdownVisible.value = true
 
@@ -105,7 +116,32 @@ const startExam = async (row) => {
       router.push(`/exam/`)
     }
   }, 1000)
+  setCookie('examId', row.id)
+  setCookie('paperId', row.paper_id)
+  setCookie('end_time', row.end_time)
 }
+
+const canStartExam = (row: Exam): boolean => {
+  const now = currentTime.value
+  const start = new Date(row.start_time)
+  const end = new Date(row.end_time)
+  return now >= start && now <= end
+}
+
+const getExamStatus = (row: Exam): string => {
+  const now = currentTime.value
+  const start = new Date(row.start_time)
+  const end = new Date(row.end_time)
+  if (now < start) {
+    return '考试未开始'
+  } else if (now > end) {
+    return '考试已结束'
+  } else {
+    return '开始考试'
+  }
+}
+
+
 
 const tableRef = ref<TableInstance>()
 
@@ -159,5 +195,10 @@ const timeFilterOptions = () => {
   ]
   return options
 }
+
+// Computed property to filter out finished exams
+const filteredTableData = computed(() => {
+  return tableData.value.filter(exam => exam.finished !== 1)
+})
 
 </script>
